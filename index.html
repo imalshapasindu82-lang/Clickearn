@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClickEarn - Balance</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f2f5f9;
+  color: #222;
+}
+
+.header {
+  background: #1769e0;
+  color: white;
+  padding: 22px;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 25px;
+}
+
+.container {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 15px;
+}
+
+.balance {
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 5px 20px #00000012;
+}
+
+.balance p {
+  color: #777;
+}
+
+.balance h2 {
+  margin: 10px 0;
+  color: #1769e0;
+  font-size: 38px;
+}
+
+.card {
+  background: white;
+  margin-top: 15px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px #00000010;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.earn-btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: #1769e0;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.earn-btn:disabled {
+  background: #999;
+}
+
+.withdraw {
+  background: #12a150;
+}
+
+.notice {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff7d6;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>💰 ClickEarn</h1>
+  <p>Points & Balance</p>
+</div>
+
+<div class="container">
+
+  <div class="balance">
+    <p>ඔබගේ Balance</p>
+    <h2><span id="points">0</span> Points</h2>
+    <p>1,000 Points = Rs.100</p>
+  </div>
+
+  <div class="card">
+    <h3>📊 Earnings</h3>
+
+    <div class="row">
+      <span>අද ලැබුණු Points</span>
+      <b id="today">0</b>
+    </div>
+
+    <div class="row">
+      <span>Total Points</span>
+      <b id="total">0</b>
+    </div>
+
+    <div class="row">
+      <span>Withdrawal Minimum</span>
+      <b>1,000 Points</b>
+    </div>
+
+    <button class="earn-btn" id="earnBtn" onclick="earnPoints()">
+      🖱️ Click කරලා Points ගන්න
+    </button>
+
+    <button class="earn-btn withdraw" onclick="withdraw()">
+      💵 Withdraw Request
+    </button>
+
+    <div class="notice">
+      ⚠️ මෙය demo system එකකි. Points සැබෑ මුදල් නොවන අතර,
+      payment gateway එකක් සම්බන්ධ කර නැත.
+    </div>
+  </div>
+
+</div>
+
+<script>
+let points = Number(localStorage.getItem("points")) || 0;
+let today = Number(localStorage.getItem("today")) || 0;
+
+function updateDisplay() {
+  document.getElementById("points").textContent = points;
+  document.getElementById("total").textContent = points;
+  document.getElementById("today").textContent = today;
+}
+
+function earnPoints() {
+
+  // Demo: එක් click එකකට 10 points
+  points += 10;
+  today += 10;
+
+  localStorage.setItem("points", points);
+  localStorage.setItem("today", today);
+
+  updateDisplay();
+
+  const btn = document.getElementById("earnBtn");
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Please wait...";
+
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.textContent = "🖱️ Click කරලා Points ගන්න";
+  }, 5000);
+}
+
+function withdraw() {
+
+  if (points < 1000) {
+    alert(
+      "❌ Withdrawal කරන්න අවම වශයෙන් 1,000 Points අවශ්‍යයි.\n\nඔබගේ Points: " 
+      + points
+    );
+    return;
+  }
+
+  alert(
+    "✅ Withdrawal request එක සාර්ථකයි!\n\n" +
+    "ඔබගේ Points: " + points
+  );
+}
+
+updateDisplay();
+</script>
+
+</body>
+</html>
